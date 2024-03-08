@@ -1,91 +1,79 @@
-//oi meu lindo
-//aqui que vou te dar um xero
-//impostor
 public class MoveImpostor {
 
-    public static void moveImpostor(int[] arr) {
-        int impostorIndex = findImpostor(arr);
+    public void moveImpostor(int[] v) {
+        int impostorIndex = findImpostor(v);
         if (impostorIndex != -1) {
-            moveElementToPlace(arr, impostorIndex);
+            moveElementToPlace(v, impostorIndex);
         }
     }
 
-    private static int findImpostor(int[] arr) {
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i] < arr[i - 1]) {
+    private int findImpostor(int[] v) {
+        for (int i = 1; i < v.length; i++) {
+            if (v[i] < v[i - 1]) {
                 return i;
             }
         }
         return -1;
     }
 
-    private static void moveElementToPlace(int[] arr, int impostorIndex) {
-        int impostor = arr[impostorIndex];
+    private void moveElementToPlace(int[] v, int impostorIndex) {
+        int impostor = v[impostorIndex];
         int i = impostorIndex;
 
-        while (i > 0 && impostor < arr[i - 1]) {
-            arr[i] = arr[i - 1];
+        while (i > 0 && impostor < v[i - 1]) {
+            v[i] = v[i - 1];
             i--;
         }
 
-        arr[i] = impostor;
+        v[i] = impostor;
     }
 }
+// a
+public class MergeSort {
 
-//duplicados
-public class DuplicatesChecker {
+    public void sort(int[] a, int ini, int fim) {
+        if (ini < fim) {
+            int meio = (fim + ini) / 2;
+            sort(a, ini, meio);
+            sort(a, meio + 1, fim);
+            merge(a, ini, meio, fim);
+        }
+    }
 
-    public static boolean hasDuplicates(int[] arr) {
-        for (int i = 0; i < arr.length - 1; i++) {
-            for (int j = i + 1; j < arr.length; j++) {
-                if (arr[i] == arr[j]) {
+    private void merge(int[] a, int ini, int meio, int fim) {
+        int[] helper = new int[a.length];
+        for (int i = ini; i <= fim; i++) {
+            helper[i] = a[i];
+        }
+
+        int i = ini;
+        int j = meio + 1;
+        int k = ini;
+
+        while (i <= meio && j <= fim) {
+            if (helper[i] <= helper[j]) {
+                a[k++] = helper[i++];
+            } else {
+                a[k++] = helper[j++];
+            }
+        }
+
+        while (i <= meio) {
+            a[k++] = helper[i++];
+        }
+    }
+}
+//a 
+public class Duplicados {
+
+    public boolean contemDuplicados(int[] v) {
+        for (int i = 0; i < v.length - 1; i++) {
+            for (int j = i + 1; j < v.length; j++) {
+                if (v[i] == v[j]) {
                     return true;
                 }
             }
         }
         return false;
-    }
-}
-//merge
-public class MergeSort {
-
-    public static void mergeSort(int[] arr) {
-        if (arr == null || arr.length <= 1) {
-            return;
-        }
-
-        int[] helper = new int[arr.length];
-        mergeSort(arr, helper, 0, arr.length - 1);
-    }
-
-    private static void mergeSort(int[] arr, int[] helper, int low, int high) {
-        if (low < high) {
-            int mid = (low + high) / 2;
-            mergeSort(arr, helper, low, mid);
-            mergeSort(arr, helper, mid + 1, high);
-            merge(arr, helper, low, mid, high);
-        }
-    }
-
-    private static void merge(int[] arr, int[] helper, int low, int mid, int high) {
-        for (int i = low; i <= high; i++) {
-            helper[i] = arr[i];
-        }
-
-        int i = low;
-        int j = mid + 1;
-        int k = low;
-
-        while (i <= mid && j <= high) {
-            if (helper[i] <= helper[j]) {
-                arr[k++] = helper[i++];
-            } else {
-                arr[k++] = helper[j++];
-            }
-        }
-
-        while (i <= mid) {
-            arr[k++] = helper[i++];
-        }
     }
 }
