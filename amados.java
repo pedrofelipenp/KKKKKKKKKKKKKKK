@@ -46,3 +46,46 @@ public class DuplicatesChecker {
         return false;
     }
 }
+//merge
+public class MergeSort {
+
+    public static void mergeSort(int[] arr) {
+        if (arr == null || arr.length <= 1) {
+            return;
+        }
+
+        int[] helper = new int[arr.length];
+        mergeSort(arr, helper, 0, arr.length - 1);
+    }
+
+    private static void mergeSort(int[] arr, int[] helper, int low, int high) {
+        if (low < high) {
+            int mid = (low + high) / 2;
+            mergeSort(arr, helper, low, mid);
+            mergeSort(arr, helper, mid + 1, high);
+            merge(arr, helper, low, mid, high);
+        }
+    }
+
+    private static void merge(int[] arr, int[] helper, int low, int mid, int high) {
+        for (int i = low; i <= high; i++) {
+            helper[i] = arr[i];
+        }
+
+        int i = low;
+        int j = mid + 1;
+        int k = low;
+
+        while (i <= mid && j <= high) {
+            if (helper[i] <= helper[j]) {
+                arr[k++] = helper[i++];
+            } else {
+                arr[k++] = helper[j++];
+            }
+        }
+
+        while (i <= mid) {
+            arr[k++] = helper[i++];
+        }
+    }
+}
