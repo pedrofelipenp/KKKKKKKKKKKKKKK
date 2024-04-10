@@ -54,3 +54,28 @@ public void sortedAdd(int v) {
     
     size += 1;
 }
+
+questão 03:
+import java.util.HashSet;
+
+public class StopWords {
+
+    private HashSet<String> texto;
+
+    public StopWords(String[] texto) {
+        this.texto = new HashSet<>();
+        for (String palavra : texto) {
+            this.texto.add(palavra);
+        }
+    }
+
+    public HashSet<String> removeStopWords(String[] stopWords) {
+        HashSet<String> result = new HashSet<>(texto); // Cria uma cópia do conjunto texto
+
+        for (String stopWord : stopWords) {
+            result.remove(stopWord); // Remove a stopWord do conjunto result
+        }
+
+        return result;
+    }
+}
