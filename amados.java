@@ -22,3 +22,35 @@ public boolean contains(String v) {
     
     return contains;
 }
+
+questão 02:
+public void sortedAdd(int v) {
+    Node newNode = new Node(v);
+
+    if (isEmpty()) {
+        addFirst(v);
+        return;
+    }
+
+    if (v <= head.value) {
+        addFirst(v);
+        return;
+    }
+
+    if (v >= tail.value) {
+        addLast(v);
+        return;
+    }
+
+    Node current = head;
+    while (current != null && current.value < v) {
+        current = current.next;
+    }
+
+    newNode.prev = current.prev;
+    newNode.next = current;
+    current.prev.next = newNode;
+    current.prev = newNode;
+    
+    size += 1;
+}
