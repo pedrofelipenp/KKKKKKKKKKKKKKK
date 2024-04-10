@@ -1,25 +1,24 @@
-public class MoveImpostor {
-
-    public void moveImpostor(int[] v) {
-        int impostorIndex = findImpostorIndex(v);
-        if (impostorIndex != -1) {
-            swap(v, impostorIndex);
+questão 01:
+public boolean contains(String v) {
+    boolean contains = false;
+    
+    // Criar uma pilha temporária para preservar a ordem dos elementos
+    Pilha tempPilha = new Pilha(this.pilha.length);
+    
+    // Percorrer a pilha principal até encontrar o elemento desejado ou esvaziar a pilha
+    while (!isEmpty()) {
+        String elemento = pop();
+        if (elemento.equals(v)) {
+            contains = true;
         }
+        // Armazenar o elemento removido na pilha temporária
+        tempPilha.push(elemento);
     }
-
-    private int findImpostorIndex(int[] v) {
-        for (int i = 0; i < v.length - 1; i++) {
-            if (v[i] > v[i + 1]) {
-                return i + 1;
-            }
-        }
-        return -1;
+    
+    // Restaurar a pilha principal para o seu estado original
+    while (!tempPilha.isEmpty()) {
+        push(tempPilha.pop());
     }
-
-    private void swap(int[] v, int impostorIndex) {
-        int temp = v[impostorIndex];
-        v[impostorIndex] = v[impostorIndex - 1];
-        v[impostorIndex - 1] = temp;
-    }
+    
+    return contains;
 }
-  ...
