@@ -1,3 +1,9 @@
+ublicTests > testAlturaPreta() FAILED
+    org.opentest4j.AssertionFailedError at PublicTests.java:69
+
+2 tests completed, 1 failed
+
+
 public class PVTemplate {
 
     private NodePV root;
