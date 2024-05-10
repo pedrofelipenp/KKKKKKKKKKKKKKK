@@ -3,24 +3,24 @@ public class PVTemplate {
     private NodePV root;
     private int size;
 
-    public int alturaPreta() {
-        return alturaPreta(root);
+   public int alturaPreta() {
+    return alturaPreta(root);
+}
+
+private int alturaPreta(Node node) {
+    if (node == null) {
+        return 1;
     }
 
-    private int alturaPreta(Node node) {
-        if (node == null) {
-            return 1;
-        }
+    int leftBlackHeight = alturaPreta(node.left);
+    int rightBlackHeight = alturaPreta(node.right);
 
-        int leftBlackHeight = alturaPreta(node.left);
-        int rightBlackHeight = alturaPreta(node.right);
-
-        if (node.vermelho) {
-            return Math.max(leftBlackHeight, rightBlackHeight);
-        } else {
-            return Math.max(leftBlackHeight, rightBlackHeight) + 1;
-        }
+    if (!node.vermelho) {
+        return Math.max(leftBlackHeight, rightBlackHeight) + 1;
+    } else { 
+        return Math.max(leftBlackHeight, rightBlackHeight);
     }
+}
 
     public boolean isEmpty() {
         return this.root == null;
