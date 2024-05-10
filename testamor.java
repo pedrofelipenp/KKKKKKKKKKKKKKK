@@ -1,3 +1,19 @@
+ Task :compileJava FAILED
+/home/aluno001/leda2/prova-pratica-5-pedrofelipenp/src/main/java/PVTemplate.java:7: error: incompatible types: NodePV cannot be converted to Node
+    return alturaPreta(root);
+                       ^
+/home/aluno001/leda2/prova-pratica-5-pedrofelipenp/src/main/java/PVTemplate.java:18: error: cannot find symbol
+    if (!node.vermelho) {
+             ^
+  symbol:   variable vermelho
+  location: variable node of type Node
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+2 errors
+
+FAILURE: Build failed with an exception.
+
+
+
 public class PVTemplate {
 
     private NodePV root;
