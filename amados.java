@@ -6,7 +6,8 @@ public class BST {
 
     private Node root;
     private int size;
-       public boolean isAVL() {
+    
+    public boolean isAVL() {
         return isAVLUtil(root);
     }
 
