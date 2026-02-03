@@ -1,0 +1,64 @@
+FAÇA O CÓDIGO TODO EM UM ARQUIVO PARA EU COPIA-LO INTEIRO DE UMA VEZ, ELE TEM QUE SER EM GO, QUERO O NOME DO ARQUIVO REFERENTE NO CÓDIGO
+
+Objetivo
+O objetivo deste laboratório é que você se familiarize com a
+utilização de canais na linguagem Go, explorando diferentes cenários
+de comunicação concorrente entre produtores e consumidores. O
+desenvolvimento será incremental, em etapas que aumentam
+gradativamente a complexidade e introduzem novos conceitos:
+pipelines, múltiplos produtores/consumidores, canais unidirecionais
+e canais bufferizados.
+Descrição
+Considere que você está desenvolvendo um sistema de monitoramento de
+sensores em uma rede IoT. Cada sensor gera dados numéricos de forma
+assíncrona, e um servidor central precisa processar essas leituras.
+A comunicação entre sensores e servidor será feita por canais em Go.
+Etapas Incrementais
+Etapa 1: Produtor e Consumidor Simples
+● Implemente um programa com uma goroutine produtora que gera
+valores aleatórios (simulando leituras de um sensor) entre 0 e
+100.
+● Uma goroutine consumidora lê do canal e imprime apenas os
+valores acima de um limite pré-definido (exemplo: maior que
+50).
+● Tanto o produtor quanto o consumidor rodam em loop infinito.
+Etapa 2: Produtor Finito
+● Modifique a versão anterior para que o produtor gere apenas
+10.000 valores aleatórios.
+● Quando terminar, feche o canal e encerre o programa.
+Etapa 3: Múltiplos Sensores (Produtores)
+● Agora considere que existem dois sensores (duas goroutines
+produtoras).
+● Cada produtor gera uma quantidade aleatória de valores.
+● O consumidor central (único) recebe valores de ambos e
+continua imprimindo apenas os que estão acima do limite.
+Etapa 4: Canal Unidirecional e Bufferizado
+● Refaça o programa anterior:
+○ Defina o canal como unidirecional (chan<- para produtores
+e <-chan para consumidores).
+○ Use um canal bufferizado (ex.: buffer de 100 elementos)
+para reduzir bloqueios entre produtores e consumidor.
+Etapa 5: Vários Consumidores
+● Evolua para ter múltiplas goroutines consumidoras, cada uma
+processando valores recebidos do canal.
+● Cada consumidor imprime valores com uma identificação própria
+(ex.: Consumidor 1 recebeu 87).
+Observe e discuta com sua dupla o comportamento de divisão de
+trabalho entre os consumidores.
+Para gerar números aleatórios, por exemplo entre 0 e 100, use a
+biblioteca abaixo:
+"math/rand"
+rand.Seed(42)
+for {
+v := rand.Intn(100)
+}
+Visão geral do código base
+Aqui temos o pdf deste laboratório.
+https://github.com/giovannifs/fpc/blob/master/2025.2/Lab7/
+Todas as soluções devem ser desenvolvidas no diretório src dentro do
+Lab7, um arquivo para cada etapa do lab. Seguem os nomes:
+● lab7-e1.go
+● lab7-e2.go
+● lab7-e3.go
+● lab7-e4.go
+● lab7-e5.go
