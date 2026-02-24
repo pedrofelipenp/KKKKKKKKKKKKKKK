@@ -1,0 +1,76 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.concurrent.*;
+
+public class LogAnalyzer4 {
+
+    static class Result {
+        int total200;
+        int total500;
+    }
+
+    public static void main(String[] args) {
+
+        if (args.length == 0) {
+            System.out.println("Uso: java LogAnalyzer <arquivos_de_log>");
+            System.exit(1);
+        }
+
+        ExecutorService executor = Executors.newFixedThreadPool(
+                Runtime.getRuntime().availableProcessors()
+        );
+
+        int final200 = 0;
+        int final500 = 0;
+
+        Future<Result>[] futures = new Future[args.length];
+
+        for (int i = 0; i < args.length; i++) {
+            String fileName = args[i];
+
+            futures[i] = executor.submit(() -> processFile(fileName));
+        }
+
+        executor.shutdown();
+
+        for (Future<Result> future : futures) {
+            try {
+                Result r = future.get();
+                final200 += r.total200;
+                final500 += r.total500;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("===== RESULTADO FINAL =====");
+        System.out.println("Total 200: " + final200);
+        System.out.println("Total 500: " + final500);
+    }
+
+    public static Result processFile(String fileName) {
+
+        Result result = new Result();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(" ");
+
+                if (parts.length == 3) {
+                    String code = parts[2];
+
+                    if (code.equals("200")) result.total200++;
+                    else if (code.equals("500")) result.total500++;
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+}
