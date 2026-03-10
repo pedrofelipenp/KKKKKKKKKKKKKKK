@@ -1,0 +1,28 @@
+Etapa 2 – Limite de produção e timeout no consumidor
+
+Nesta etapa o produtor foi modificado para gerar apenas 10.000
+números aleatórios, enquanto o consumidor passou a utilizar um
+timeout de 600 milissegundos ao tentar retirar elementos da fila.
+
+A principal diferença em relação à etapa anterior é que agora o
+programa não executa indefinidamente. Após a produção dos 10.000
+itens, os produtores encerram sua execução.
+
+Os consumidores continuam tentando consumir itens da fila, porém
+utilizam o método poll com timeout. Isso significa que o consumidor
+aguarda até 600ms por um novo elemento. Caso nenhum item seja
+disponibilizado nesse intervalo, o método retorna null e o consumidor
+encerra sua execução.
+
+Nos testes realizados foi observado que:
+
+* Enquanto existem itens sendo produzidos, os consumidores continuam
+  consumindo normalmente.
+* Após o término da produção, os consumidores ainda podem consumir
+  os itens restantes na fila.
+* Quando a fila fica vazia e nenhum novo item é produzido, o timeout
+  expira e os consumidores finalizam sua execução.
+
+Dessa forma, o uso de timeout evita que os consumidores fiquem
+bloqueados indefinidamente aguardando novos itens, permitindo que o
+programa finalize corretamente após o término da produção.
