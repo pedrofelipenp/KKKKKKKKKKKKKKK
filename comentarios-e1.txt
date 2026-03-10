@@ -1,0 +1,30 @@
+Etapa 1 – Análise do comportamento com BlockingQueue
+
+Nesta etapa foi implementada uma versão concorrente do problema
+Produtor-Consumidor utilizando ArrayBlockingQueue como buffer
+compartilhado entre as threads produtoras e consumidoras.
+
+A BlockingQueue fornece sincronização automática entre as threads.
+Quando o buffer está cheio, o produtor é bloqueado até que algum
+consumidor remova um elemento. Da mesma forma, quando o buffer está
+vazio, o consumidor fica bloqueado até que um produtor insira um item.
+
+Foram testados dois cenários principais:
+
+1. Tempo de produção maior que o tempo de consumo
+   Nesse caso, os consumidores são mais rápidos que os produtores.
+   Assim, frequentemente os consumidores tentam remover itens quando
+   o buffer está vazio. Como resultado, eles ficam bloqueados aguardando
+   a produção de novos itens. O buffer geralmente permanece com poucos
+   elementos.
+
+2. Tempo de produção menor que o tempo de consumo
+   Nesse cenário, os produtores são mais rápidos que os consumidores.
+   Dessa forma, os itens são produzidos mais rapidamente do que são
+   consumidos, fazendo com que o buffer encha gradualmente até atingir
+   sua capacidade máxima. Quando o buffer está cheio, os produtores
+   ficam bloqueados até que algum consumidor remova elementos da fila.
+
+Portanto, a BlockingQueue garante o controle automático de acesso
+concorrente e o equilíbrio entre produção e consumo sem necessidade
+de sincronização manual com locks ou semáforos.
