@@ -2,7 +2,7 @@ import random
 import time
 import sys
 import threading
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Dict, List, Optional, Any
 
 
 class Classes:
@@ -17,14 +17,14 @@ class Classes:
         self.class_ids: List[int] = list(range(1, num_classes + 1))
         self.num_students_per_class: int = num_students_per_class
 
+        # Registro das notas
         self.semester_registry: Dict[str, Dict[str, Optional[Any]]] = self._generate_semester_registry()
         
-        # Dicionário para armazenar a maior nota de cada turma
-        self.highest_grade_per_class: Dict[int, Tuple[str, float]] = {}
+        # Dicionário para armazenar a maior nota de cada turma (Evolução pedida)
+        self.highest_grades: Dict[int, float] = {}
 
-    def _generate_student_grade(self) -> Tuple[str, float]:
-        grade_value = random.random() * 10
-        return (f"{grade_value:0.2f}", grade_value)
+    def _generate_student_grade(self) -> str:
+        return f"{random.random() * 10:0.2f}"
 
     def _generate_student_id(self) -> str:
         sid = self._next_id_counter
@@ -49,37 +49,37 @@ class Classes:
         ]
 
     def process_grades(self, class_id: int) -> None:
+        """
+        Executado por cada thread filha para corrigir provas e identificar a maior nota.
+        """
         professor = self.professors[(class_id - 1) % len(self.professors) + 1]
         print(f"\n{professor}'s class ({class_id}) — starting grading...")
         time.sleep(random.uniform(0.5, 1.0))
 
         their_alumni = self.get_students_in_class(class_id)
         
-        # Variáveis locais para calcular a maior nota desta turma
-        highest_grade_value: float = -1.0
-        highest_grade_student: str = ""
-        highest_grade_str: str = ""
+        # Variável local para rastrear a maior nota da turma nesta thread
+        max_grade_in_class = -1.0
 
         for student_id in their_alumni:
             time.sleep(random.uniform(0.2, 0.5))
 
-            grade_str, grade_value = self._generate_student_grade()
+            grade_str = self._generate_student_grade()
+            grade_val = float(grade_str)
+            
+            # Registro da nota no sistema
             self.semester_registry[student_id]["final_grade"] = grade_str
             
-            # Atualiza a maior nota da turma
-            if grade_value > highest_grade_value:
-                highest_grade_value = grade_value
-                highest_grade_student = student_id
-                highest_grade_str = grade_str
+            # [span_2](start_span)Comparação para encontrar a maior nota (Evolução)[span_2](end_span)
+            if grade_val > max_grade_in_class:
+                max_grade_in_class = grade_val
 
             print(f"{professor} corrected Student {student_id} from class {class_id} - Grade: {grade_str}")
             time.sleep(random.uniform(0.1, 0.3))
 
-        # Armazena a maior nota da turma (thread-safe: cada thread escreve em chave diferente)
-        self.highest_grade_per_class[class_id] = (highest_grade_student, highest_grade_str)
-        
-        print(f"{professor}'s class {class_id} grades successfully processed!")
-        print(f"🏆 {professor}'s class {class_id} HIGHEST GRADE: Student {highest_grade_student} - {highest_grade_str}\n")
+        # [span_3](start_span)Armazena o resultado final da turma no dicionário compartilhado[span_3](end_span)
+        self.highest_grades[class_id] = max_grade_in_class
+        print(f"{professor}'s class {class_id} grades successfully processed!\n")
 
     def registry_to_string(self, class_id: int) -> None:
         professor = self.professors[(class_id - 1) % len(self.professors) + 1]
@@ -93,10 +93,9 @@ class Classes:
                 f"final_grade: {self.semester_registry[student_id]['final_grade']}"
             )
         
-        # Exibe a maior nota da turma
-        if class_id in self.highest_grade_per_class:
-            student, grade = self.highest_grade_per_class[class_id]
-            print(f"🎯 HIGHEST GRADE: Student {student} - {grade}")
+        # [span_4](start_span)Exibe a maior nota que já foi computada pela thread filha[span_4](end_span)
+        highest = self.highest_grades.get(class_id, 0.0)
+        print(f"==> HIGHEST GRADE IN CLASS {class_id}: {highest}")
 
 
 if __name__ == "__main__":
@@ -114,18 +113,22 @@ if __name__ == "__main__":
 
     threads: List[threading.Thread] = []
 
-    # Cria e inicia as threads
+    # 1. [span_5](start_span)[span_6](start_span)Criação das Threads[span_5](end_span)[span_6](end_span)
     for class_id in semester.class_ids:
         t = threading.Thread(target=semester.process_grades, args=(class_id,))
         threads.append(t)
-        t.start()  # <-- IMPORTANTE: faltava o start() no seu código!
 
-    # Aguarda todas terminarem
+    # 2. [span_7](start_span)Inicialização das Threads[span_7](end_span)
+    # Esta etapa é essencial para que a execução ocorra de fato.
+    for t in threads:
+        t.start()
+
+    # 3. [span_8](start_span)Sincronização: Thread principal espera todas as filhas terminarem[span_8](end_span)
     for t in threads:
         t.join()
 
-    # Exibe os resultados
+    # 4. [span_9](start_span)[span_10](start_span)Divulgação das Notas (Etapa final após sincronização)[span_9](end_span)[span_10](end_span)
     for class_id in semester.class_ids:
         semester.registry_to_string(class_id)
 
-    print("\n======================= All grades released! =======================")
+    print("======================= The End =======================")
