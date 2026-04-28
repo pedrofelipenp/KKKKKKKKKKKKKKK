@@ -1,0 +1,59 @@
+Análise dos Questionamentos sobre a Solução Concorrente
+
+PERGUNTA 1: Houve compartilhamento de memória entre as diferentes threads 
+(filhas e mãe)?
+
+SIM, houve compartilhamento de memória. Especificamente:
+
+- self.semester_registry (dicionário que armazena as notas de todos os alunos)
+- self.highest_grade_per_class (dicionário que armazena a maior nota por turma)
+
+Ambas as estruturas são acessadas por todas as threads filhas (professores) 
+e pela thread principal (que faz a leitura para exibição).
+
+
+PERGUNTA 2: Isso pode levar a condições de corrida?
+
+NESTE CASO ESPECÍFICO, NÃO há risco de condições de corrida pelos seguintes 
+motivos:
+
+- CADA THREAD ESCREVE EM CHAVES DIFERENTES do dicionário:
+  * semester_registry: cada thread escreve apenas nos alunos da sua turma
+    (student_id único, não compartilhado entre threads)
+  * highest_grade_per_class: cada thread escreve na chave do seu class_id
+    (cada turma tem uma chave diferente)
+
+- NENHUMA THREAD ATUALIZA O MESMO ESPAÇO DE MEMÓRIA que outra thread
+
+- A thread principal só faz LEITURA após todas as threads terminarem 
+  (graças ao join()), então não há leitura concorrente com escrita
+
+
+PERGUNTA 3: As múltiplas threads estão atualizando o mesmo espaço na memória?
+
+NÃO. Cada thread processa uma turma diferente, e cada turma tem:
+- Seu próprio conjunto de alunos (student_ids diferentes)
+- Sua própria entrada no dicionário highest_grade_per_class
+
+Não há overlap entre as regiões de memória escritas pelas threads.
+
+
+PERGUNTA 4: Temos algum problema na solução desenvolvida? Por que sim ou não?
+
+A solução NÃO TEM PROBLEMAS DE CONCORRÊNCIA para este cenário específico, 
+mas é importante notar:
+
+POR QUE NÃO TEM PROBLEMA:
+- Isolamento dos dados por turma (design inteligente)
+- Uso correto de join() para sincronização no final
+- Cada thread trabalha com dados independentes
+
+POTENCIAIS PROBLEMAS SE O CENÁRIO MUDASSE:
+- Se duas threads pudessem processar a mesma turma → haveria condição de corrida
+- Se as threads atualizassem um contador compartilhado → precisaria de lock
+- Se a thread principal lesse durante a execução → dados inconsistentes
+
+CONCLUSÃO:
+A solução atual é segura e não apresenta condições de corrida devido ao 
+design que isola os dados que cada thread modifica. O compartilhamento 
+de memória existe, mas é feito de forma controlada e sem conflitos.
