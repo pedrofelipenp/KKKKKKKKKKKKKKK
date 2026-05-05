@@ -3,6 +3,41 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+class DnaWorker implements Runnable {
+    private File[] files;
+    private String pattern;
+    private int threadId;
+    private int numThreads;
+    private long result;
+
+    public DnaWorker(File[] files, String pattern, int threadId, int numThreads) {
+        this.files = files;
+        this.pattern = pattern;
+        this.threadId = threadId;
+        this.numThreads = numThreads;
+        this.result = 0;
+    }
+
+    @Override
+    public void run() {
+        long localTotal = 0;
+
+        for (int i = threadId; i < files.length; i += numThreads) {
+            try {
+                localTotal += DnaConcurrentMain.countInFile(files[i], pattern);
+            } catch (IOException e) {
+                System.err.println("Erro ao ler arquivo " + files[i].getName() + ": " + e.getMessage());
+            }
+        }
+
+        this.result = localTotal;
+    }
+
+    public long getResult() {
+        return result;
+    }
+}
+
 public class DnaConcurrentMain {
 
     public static void main(String[] args) {
@@ -27,59 +62,82 @@ public class DnaConcurrentMain {
             System.exit(3);
         }
 
-        try {
-            long total = 0;
-            
-	    for (File f : files) {
-                total += countInFile(f, pattern);
-            }
+        int numThreads = Math.min(files.length, Runtime.getRuntime().availableProcessors());
 
-	    System.out.println("Sequência " + pattern + " foi encontrada " + total + " vezes.");
-        } catch (IOException e) {
-            System.err.println("Erro ao ler arquivos: " + e.getMessage());
-            System.exit(4);
+        Thread[] threads = new Thread[numThreads];
+        DnaWorker[] workers = new DnaWorker[numThreads];
+
+        for (int i = 0; i < numThreads; i++) {
+            workers[i] = new DnaWorker(files, pattern, i, numThreads);
+            threads[i] = new Thread(workers[i]);
+            threads[i].start();
         }
-    }
 
+        for (int i = 0; i < numThreads; i++) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("Execução interrompida.");
+                System.exit(4);
+            }
+        }
+
+        long total = 0;
+
+        for (int i = 0; i < numThreads; i++) {
+            total += workers[i].getResult();
+        }
+
+        System.out.println("Sequência " + pattern + " foi encontrada " + total + " vezes.");
+    }
 
     public static long countInFile(File file, String pattern) throws IOException {
         long total = 0;
+
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
+
             while ((line = br.readLine()) != null) {
                 line = line.trim();
-                
-		// simulando delay de processamento
-		try {
-             	   Thread.sleep(10);
-           	} catch (InterruptedException e) {
-                   Thread.currentThread().interrupt();
+
+                // simulando delay de processamento
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return total;
                 }
 
-		if (!line.isEmpty()) {
+                if (!line.isEmpty()) {
                     total += countInSequence(line, pattern);
                 }
             }
         }
-        return total;    
+
+        return total;
     }
 
     public static long countInSequence(String sequence, String pattern) {
         if (sequence == null || pattern == null) {
             return 0;
         }
+
         int n = sequence.length();
         int m = pattern.length();
+
         if (m == 0 || n < m) {
             return 0;
         }
+
         long count = 0;
+
         for (int i = 0; i <= n - m; i++) {
             if (sequence.regionMatches(false, i, pattern, 0, m)) {
                 count++;
             }
         }
+
         return count;
     }
-
 }
