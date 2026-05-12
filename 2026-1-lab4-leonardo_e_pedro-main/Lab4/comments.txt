@@ -1,0 +1,7 @@
+A implementação concorrente divide a imagem em faixas de linhas, e cada thread processa uma parte diferente da imagem.
+
+Nos testes com diferentes quantidades de threads, é esperado que o tempo diminua inicialmente, pois o trabalho é dividido. Porém, após certo ponto, o ganho pode parar ou até piorar, devido ao custo de criação das threads, sincronização com join() e competição por recursos da CPU e memória.
+
+Em imagens pequenas, como small_sample.jpg, a melhora pode ser baixa porque o custo das threads pode ser maior que o ganho. Em imagens maiores, a versão concorrente tende a ter melhor desempenho.
+
+O melhor número de threads geralmente fica próximo da quantidade de núcleos do processador. Usar threads demais pode gerar overhead e reduzir a eficiência.
