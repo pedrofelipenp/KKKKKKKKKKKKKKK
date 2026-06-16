@@ -1,0 +1,3 @@
+Testei o programa com diferentes quantidades de produtores e consumidores. O sistema funcionou corretamente, com os produtores inserindo itens no buffer e os consumidores removendo apenas os itens do seu tipo, pares ou ímpares.
+
+Quando a produção era mais rápida que o consumo, o buffer aumentava. Quando o consumo era mais rápido, o buffer ficava menor. Os semáforos impediram acesso simultâneo incorreto ao buffer e evitaram que ele passasse do limite de 100 itens.
