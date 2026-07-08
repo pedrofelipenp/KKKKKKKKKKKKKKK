@@ -114,24 +114,38 @@ window.consultaCep = consultaCep;
 //Etapa 03
 const gerarTextoMarketeiro = (dadosFormulario) => {
 
-    const card = document.createElement('div');
-    card.style.width = '300px';
-    card.style.border = '1px solid #ccc';
-    card.style.borderRadius = '10px';
-    card.style.padding = '15px';
-    card.style.boxShadow = '2px 2px 10px rgba(0,0,0,0.1)';
-    card.style.margin = '10px auto';
-    card.style.fontFamily = 'Arial, sans-serif';
-    card.style.backgroundColor = '#f9f9f9';
+    const container = document.querySelector('.marketeiro .container') || document.body;
+    let card = document.getElementById('card-marketeiro');
+    if (!card) {
+        card = document.createElement('div');
+        card.id = 'card-marketeiro';
+        card.style.maxWidth = '800px';
+        card.style.margin = '20px auto';
+        card.style.padding = '20px';
+        card.style.borderRadius = '8px';
+        card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+        card.style.backgroundColor = '#ffffff';
+        card.style.fontFamily = 'Arial, sans-serif';
+        container.appendChild(card);
+    }
+
+    const nome = dadosFormulario.nome || '';
+    const email = dadosFormulario.email || '';
+    const motivo = dadosFormulario.motivo || '';
+    const cidade = dadosFormulario.cidade || '';
+    const endereco = dadosFormulario.endereco || '';
+    const cep = dadosFormulario.cep || '';
 
     card.innerHTML = `
-        <h3 style="text-align: center; color: #333;">Informações do Usuário</h3>
-        <p><strong>Mensagem:</strong> Apresentamos ${dadosFormulario.nome}, residente na rua ${dadosFormulario.endereco}</p>
+        <h2 style="text-align:center; color:#222;">Perfil Profissional</h2>
+        <p>Apresentamos ${nome}, um profissional altamente qualificado e referência no desenvolvimento avançado de software. Com uma trajetória pautada pela inovação e excelência, ${nome} tem se destacado na criação de soluções tecnológicas de alto impacto, na qual tem transformado desafios complexos em sistemas eficientes e escaláveis.</p>
+        <p>Comunicável e estrategista, ${nome} pode ser contatado via e-mail em ${email}, mantendo-se sempre disponível para colaborações e projetos que demandem expertise em engenharia de software, inteligência artificial e programação web. Seu principal objetivo no momento é ${motivo}, reforçando sua busca contínua pelo aprimoramento e pela entrega de soluções robustas e inteligentes.</p>
+        <p>Atualmente, ${nome} reside na dinâmica cidade de ${cidade}, no endereço ${endereco}, CEP ${cep}, onde continua sua missão de criar e arquitetar aplicações inovadoras. Seu conhecimento aprofundado em diversas linguagens, frameworks e metodologias ágeis o posiciona como um líder técnico capaz de elevar qualquer equipe ao mais alto nível de performance.</p>
+        <p>Com uma visão futurista e uma abordagem precisa para o desenvolvimento de software, ${nome} segue transformando o cenário tecnológico com soluções que transcendem expectativas.</p>
     `;
 
-    document.body.appendChild(card);
-
 }
+window.gerarTextoMarketeiro = gerarTextoMarketeiro;
 window.gerarTextoMarketeiro = gerarTextoMarketeiro;
 
 //Não mexer neste método
