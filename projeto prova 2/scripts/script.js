@@ -173,15 +173,41 @@ function submeterDados(event) {
 const consultarProdutosExternos = () => {
 
     return new Promise((resolve, reject) => {
-        //TODO
+        fetch('https://fakestoreapi.com/products')
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                // map first 6 products into the shape we need
+                const produtos = data.slice(0, 6).map(p => ({
+                    nome: p.title,
+                    preco: p.price,
+                    imagem: p.image
+                }));
+                resolve(produtos);
+            })
+            .catch(() => reject('Erro ao consultar os Produtos'));
     })
 }
 
 const alterarValoresTabela = () => {
     consultarProdutosExternos().then(data => {
-        //TODO
+        const tabela = document.getElementById("tabelaProdutos").getElementsByTagName('tbody')[0];
+        for (let i = 0; i < 6; i++) {
+            const produto = data[i];
+            const row = tabela.rows[i];
+            if (!produto || !row) continue;
+            // Nome
+            row.cells[0].innerText = produto.nome;
+            // Preço formatado
+            row.cells[1].innerText = produto.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            // Imagem
+            row.cells[2].innerHTML = `<img src="${produto.imagem}" alt="${produto.nome}" style="max-width:80px; max-height:80px; object-fit:contain;">`;
+        }
     }).catch(error => alert(error));
 }
+window.alterarValoresTabela = alterarValoresTabela;
 
 //Não mexer neste método
 const modificaValores = ([produto1, produto2, produto3, produto4, produto5, produto6]) => {
