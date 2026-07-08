@@ -1,18 +1,22 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
+    display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: flex-start;
+    min-height: 100vh;
     margin: 0;
+    padding: 40px 20px;
 }
 
 .container {
     background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    padding: 24px;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 900px;
+    box-sizing: border-box;
 }
 
 h1 {
@@ -21,8 +25,9 @@ h1 {
 }
 
 form {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
 }
 
 label {
@@ -31,10 +36,11 @@ label {
 }
 
 input, textarea, button {
-    margin-bottom: 15px;
+    width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 6px;
+    box-sizing: border-box;
 }
 
 input[readonly] {
@@ -46,9 +52,31 @@ button {
     color: white;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s, transform 0.08s;
+    padding: 12px 14px;
 }
 
 button:hover {
-    background-color: #3949ab;
+    background-color: #4f5ac1;
+    transform: translateY(-1px);
+}
+
+/* Responsive: two-column form on wider screens */
+@media (min-width: 720px) {
+    form {
+        grid-template-columns: 1fr 1fr;
+    }
+    label, input, textarea {
+        grid-column: auto;
+    }
+    /* Make certain sections span both columns */
+    h3 { grid-column: 1 / -1; }
+    textarea { grid-column: 1 / -1; }
+    button { grid-column: 1 / -1; justify-self: center; max-width: 220px; }
+}
+
+/* Improve spacing for small screens */
+@media (max-width: 400px) {
+    .container { padding: 16px; }
+    h1 { font-size: 1.4rem; }
 }
