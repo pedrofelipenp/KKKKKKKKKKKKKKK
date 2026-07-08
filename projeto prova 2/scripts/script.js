@@ -1,28 +1,32 @@
 let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
 
-function adicionaAoCarrinho(nomeProduto, precoProduto) {
+const adicionaAoCarrinho = (nomeProduto, precoProduto) => {
     const produto = { nome: nomeProduto, preco: precoProduto };
     carrinho.push(produto);
     atualizaContagemCarrinho();
     salvarCarrinho();
     alert(`O produto ${nomeProduto} foi adicionado ao seu carrinho.`);
 }
+window.adicionaAoCarrinho = adicionaAoCarrinho;
 
-function atualizaContagemCarrinho() {
+const atualizaContagemCarrinho = () => {
     document.getElementById('carrinho-contagem').textContent = carrinho.length;
 }
+window.atualizaContagemCarrinho = atualizaContagemCarrinho;
 
-function salvarCarrinho() {
+const salvarCarrinho = () => {
     localStorage.setItem('carrinho', JSON.stringify(carrinho));
 }
+window.salvarCarrinho = salvarCarrinho;
 
-function carregaCarrinho() {
+const carregaCarrinho = () => {
     carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
     atualizaContagemCarrinho();
     mostrarItensCarrinho();
 }
+window.carregaCarrinho = carregaCarrinho;
 
-function mostrarItensCarrinho() {
+const mostrarItensCarrinho = () => {
     const containerCarrinho = document.getElementById('carrinho-container');
     const totalCarrinho = document.getElementById('carrinho-total');
     containerCarrinho.innerHTML = '';
@@ -47,20 +51,23 @@ function mostrarItensCarrinho() {
 
     totalCarrinho.textContent = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
+window.mostrarItensCarrinho = mostrarItensCarrinho;
 
-function removerItemCarrinho(indice) {
+const removerItemCarrinho = (indice) => {
     carrinho.splice(indice, 1);
     atualizaContagemCarrinho();
     salvarCarrinho();
     mostrarItensCarrinho();
 }
+window.removerItemCarrinho = removerItemCarrinho;
 
-function limpaCarrinho() {
+const limpaCarrinho = () => {
     carrinho = [];
     atualizaContagemCarrinho();
     salvarCarrinho();
     mostrarItensCarrinho();
 }
+window.limpaCarrinho = limpaCarrinho;
 
 
 //RESPOSTAS
