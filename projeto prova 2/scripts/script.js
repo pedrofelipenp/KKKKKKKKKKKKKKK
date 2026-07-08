@@ -78,7 +78,19 @@ window.limpaCarrinho = limpaCarrinho;
 //Resposta do Reject: reject('Erro ao consultar o CEP'))
 const buscarEndereco = (cep) => {
     return new Promise((resolve, reject) => {
-        //TODO
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                if (data.erro) {
+                    reject('Erro ao consultar o CEP');
+                } else {
+                    resolve(data);
+                }
+            })
+            .catch(() => reject('Erro ao consultar o CEP'));
     });
 }
 
@@ -87,16 +99,20 @@ const consultaCep = () => {
     if (cep.length === 8) {
         buscarEndereco(cep)
             .then(data => {
-                //TODO
+                document.getElementById('logradouro').value = data.logradouro || '';
+                document.getElementById('complemento').value = data.complemento || '';
+                document.getElementById('cidade').value = data.localidade || '';
+                document.getElementById('estado').value = data.uf || '';
             })
             .catch(error => alert(error));
     } else {
         alert('CEP inválido!');
     }
 };
+window.consultaCep = consultaCep;
 
 //Etapa 03
-const geraTextoMarketeiro = (dadosFormulario) => {
+const gerarTextoMarketeiro = (dadosFormulario) => {
 
     const card = document.createElement('div');
     card.style.width = '300px';
@@ -116,6 +132,7 @@ const geraTextoMarketeiro = (dadosFormulario) => {
     document.body.appendChild(card);
 
 }
+window.gerarTextoMarketeiro = gerarTextoMarketeiro;
 
 //Não mexer neste método
 function submeterDados(event) {
