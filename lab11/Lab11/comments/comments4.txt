@@ -1,0 +1,3 @@
+A ordem muda porque os três produtores executam ao mesmo tempo e possuem tempos de espera diferentes. O produtor A normalmente envia mais vezes no começo, pois espera apenas 300 ms. O produtor B espera 600 ms e o produtor C espera 1000 ms.
+
+Mesmo assim, mensagens podem ficar prontas em momentos próximos. Nesses casos, o select escolhe um dos canais disponíveis, e o escalonamento das goroutines também pode variar entre as execuções.

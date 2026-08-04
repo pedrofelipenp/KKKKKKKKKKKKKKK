@@ -1,1 +1,8 @@
-to be done
+1. Qual a vantagem dos canais unidirecionais?
+Eles deixam claro se uma função apenas envia ou apenas recebe dados. Também evitam usos errados, que são detectados pelo compilador.
+
+2. Eles alteram o comportamento do programa?
+Não. O envio e o recebimento continuam funcionando da mesma forma.
+
+3. O que muda é em tempo de compilação ou execução?
+A mudança ocorre em tempo de compilação. O compilador impede receber de um canal somente de envio ou enviar para um canal somente de recebimento.

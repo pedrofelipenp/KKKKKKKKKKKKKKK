@@ -1,0 +1,5 @@
+1. Quando utilizar default?
+O default pode ser usado quando o programa não deve ficar bloqueado esperando uma operação de canal. Assim, ele pode executar outra tarefa enquanto nenhum canal está pronto.
+
+2. Quando ele pode desperdiçar processamento?
+Ele pode desperdiçar processamento quando fica dentro de um laço muito rápido, verificando os canais continuamente. Isso é chamado de espera ocupada. Uma pequena pausa, um ticker ou um select bloqueante pode evitar o uso desnecessário da CPU.

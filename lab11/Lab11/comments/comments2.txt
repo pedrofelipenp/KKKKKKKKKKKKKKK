@@ -1,0 +1,5 @@
+Existe diferença perceptível? Se sim, quais?
+
+Sim. Com buffer 0, o produtor bloqueia a cada envio até o consumidor receber. Com buffers maiores, o produtor consegue enviar mais valores antes de bloquear. Com buffer 20, ele consegue colocar todos os valores no canal rapidamente.
+
+O consumidor continua esperando quando ainda não existe valor disponível. O tempo total fica parecido nos testes porque o consumidor possui uma pausa em cada recebimento. O buffer muda principalmente o quanto o produtor consegue avançar antes do consumidor.

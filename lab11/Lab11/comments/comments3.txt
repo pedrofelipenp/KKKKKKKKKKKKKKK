@@ -1,0 +1,3 @@
+O select escolhe sempre o mesmo canal? Por quê?
+
+Não. Ele escolhe um dos canais que estiver pronto naquele momento. Quando mais de um canal está pronto, a escolha não segue uma ordem fixa. Por isso, a ordem das mensagens pode mudar entre as execuções.
