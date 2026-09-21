@@ -1,0 +1,26 @@
+Q1)
+
+Na solução concorrente, as tarefas de configuração dos logs e verificação dos recursos são iniciadas concorrentemente.
+
+Diferentemente da solução serial, uma tarefa não precisa esperar a outra terminar para começar. Por isso, as mensagens das duas tarefas podem aparecer intercaladas e a ordem pode variar entre diferentes execuções.
+
+Q2)
+
+Foram adicionados nomes significativos às threads:
+
+Setup-Logs
+Check-Recursos
+
+Antes, as threads recebiam nomes automáticos. Com os novos nomes, fica mais fácil identificar nos logs qual thread está executando cada tarefa, facilitando a depuração e o acompanhamento da execução.
+
+Q3)
+
+A thread main inicia o programa, cria as threads e chama start() para iniciar a execução delas.
+
+Sem o uso de join(), a main continua sua execução sem esperar que as outras threads terminem. Por isso, a mensagem de finalização da main pode aparecer antes da conclusão das tarefas de configuração dos logs e verificação dos recursos.
+
+Q4)
+
+Após adicionar tLogs.join() e tCheck.join(), a thread main passa a esperar que as duas threads terminem antes de continuar.
+
+As threads Setup-Logs e Check-Recursos continuam executando concorrentemente entre si. A diferença é que a mensagem final da main só é exibida depois que ambas terminam.
