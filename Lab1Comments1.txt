@@ -1,0 +1,11 @@
+Na solução serial, as tarefas são executadas uma após a outra. Primeiro ocorre a configuração dos logs e somente depois começa a verificação dos recursos. Dessa forma, a ordem de execução não muda entre as diferentes execuções.
+
+A configuração dos logs leva 4 segundos. A verificação de recursos realiza 5 verificações, e cada uma leva entre 1 e 3 segundos.
+
+Assim, o tempo mínimo esperado é de aproximadamente 9 segundos:
+
+4 + (5 × 1) = 9 segundos.
+
+O tempo máximo esperado é de aproximadamente 19 segundos:
+
+4 + (5 × 3) = 19 segundos.
