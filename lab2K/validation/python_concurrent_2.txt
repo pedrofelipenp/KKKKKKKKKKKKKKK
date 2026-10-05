@@ -1,0 +1,35 @@
+======================= Welcome to 2026.2's UFCG Semester =======================
+
+Prof1's class (1) — starting grading...
+
+Prof2's class (2) — starting grading...
+
+Prof1's class (3) — starting grading...
+Prof2 corrected Student 3 from class 2 - Grade: 4.53
+Prof1 corrected Student 1 from class 1 - Grade: 7.83
+Prof1 corrected Student 5 from class 3 - Grade: 8.59
+Prof1 corrected Student 6 from class 3 - Grade: 0.64
+Prof2 corrected Student 4 from class 2 - Grade: 7.26
+Prof1's class 3 grades successfully processed!
+
+Prof2's class 2 grades successfully processed!
+
+Prof1 corrected Student 2 from class 1 - Grade: 7.65
+Prof1's class 1 grades successfully processed!
+
+
+*********** Prof1's Class 1 ***********
+student_id: 1, class_id: 1, final_grade: 7.83
+student_id: 2, class_id: 1, final_grade: 7.65
+Highest grade in class 1: 7.83
+
+*********** Prof2's Class 2 ***********
+student_id: 3, class_id: 2, final_grade: 4.53
+student_id: 4, class_id: 2, final_grade: 7.26
+Highest grade in class 2: 7.26
+
+*********** Prof1's Class 3 ***********
+student_id: 5, class_id: 3, final_grade: 8.59
+student_id: 6, class_id: 3, final_grade: 0.64
+Highest grade in class 3: 8.59
+======================= The End =======================

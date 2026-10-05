@@ -1,0 +1,5 @@
+Na versão serial, uma turma é corrigida inteira antes de começar a próxima. Os alunos também são corrigidos na ordem do registro: primeiro os alunos da turma 1, depois da turma 2 e assim por diante. Nas duas execuções de cada linguagem com 3 turmas e 2 alunos, essa ordem permaneceu igual.
+
+As notas e os tempos de espera podem mudar, porque são gerados aleatoriamente. Isso não altera a ordem das correções, pois a versão serial não cria threads para essas tarefas. Os registros finais são exibidos depois das correções.
+
+O tempo real inclui as esperas simuladas. Por isso, não representa apenas trabalho de CPU; user e sys medem o tempo de CPU em modo usuário e no kernel. Os logs usados na análise estão em validation.

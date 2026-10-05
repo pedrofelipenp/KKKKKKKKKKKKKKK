@@ -1,0 +1,10 @@
+python_serial_1: OK; 3 turmas, 2 alunos; tempo decorrido 5.911 s
+python_serial_2: OK; 3 turmas, 2 alunos; tempo decorrido 5.720 s
+python_concurrent_1: OK; 3 turmas, 2 alunos; tempo decorrido 2.118 s
+python_concurrent_2: OK; 3 turmas, 2 alunos; tempo decorrido 2.081 s
+c_serial_1: OK; 3 turmas, 2 alunos; tempo decorrido 5.902 s
+c_serial_2: OK; 3 turmas, 2 alunos; tempo decorrido 5.902 s
+c_concurrent_1: OK; 3 turmas, 2 alunos; tempo decorrido 2.074 s
+c_concurrent_2: OK; 3 turmas, 2 alunos; tempo decorrido 2.075 s
+
+Tempos medidos em execuções simultâneas; não são um benchmark controlado.

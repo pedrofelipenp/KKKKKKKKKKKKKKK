@@ -1,0 +1,15 @@
+Sim, a thread principal e as threads filhas compartilham dados. Em Python, elas usam o mesmo objeto semester, incluindo semester_registry e highest_grades. Em C, recebem um ponteiro para a mesma estrutura Classes, que contém registry e highest_grades. Os identificadores das turmas e os dados dos professores são consultados pelas threads, mas não são alterados durante a correção.
+
+Compartilhar uma estrutura não significa que todas as threads escrevem na mesma posição. Cada thread corrige uma turma diferente. Assim, cada aluno tem sua nota atualizada por uma única thread, e cada turma tem uma posição própria para sua maior nota. A estrutura dos dicionários Python permanece fixa: as threads atualizam valores existentes, sem adicionar ou remover alunos. Em C, cada thread escreve em elementos distintos dos vetores.
+
+A maior nota é atualizada pela thread da turma durante a correção de cada aluno. A principal não calcula esse máximo; apenas exibe o resultado depois de aguardar todas as threads.
+
+Em Python, todas as threads são iniciadas com start() antes do laço de join(). Em C, todas são criadas com pthread_create() antes do laço de pthread_join(). Colocar a espera imediatamente após cada criação faria uma turma esperar pela anterior e perderia a concorrência entre turmas.
+
+A principal só consulta as notas e os máximos para divulgação após todos os joins. Assim, não lê resultados enquanto ainda estão sendo alterados. Em C, os argumentos de cada thread ocupam posições diferentes no vetor args e continuam válidos até o término das threads.
+
+O gerador rand() de C possui estado interno compartilhado. Para não depender da segurança da implementação da biblioteca, os acessos a rand() são protegidos por um mutex. O bloqueio cobre apenas a geração do número, não a correção nem as esperas. O módulo random utilizado em Python fornece operações seguras entre threads para as funções usadas nesta solução.
+
+A ordem dos logs pode mudar entre execuções, pois o escalonamento e as esperas variam. Isso é esperado e não caracteriza condição de corrida nas notas. Não há atualização concorrente da mesma nota nem do máximo da mesma turma na solução. Se duas threads passassem a corrigir a mesma turma, a atualização do máximo precisaria de proteção adicional.
+
+Prof1 e Prof2 são rótulos reaproveitados pelo código base: a unidade de trabalho é a turma, com uma thread para cada class_id, mesmo quando várias turmas têm o mesmo nome de professor.
